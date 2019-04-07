@@ -1,69 +1,69 @@
-// p4.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include "pch.h"
 #include <iostream>
-#include<cstdio>
-#include<string>
-#include<vector>
-#include<algorithm>
 using namespace std;
 
-struct Node1
+struct Node
 {
-	string address;
-	int data;
-	string next;
-};
-struct Node2
-{
-	string address;
+	int address;
 	int data;
 };
+
+void swapNode(Node N[],int i,int j)
+{
+	int a = N[i].address;
+	int d = N[i].data;
+	N[i].address = N[j].address;
+	N[i].data = N[j].data;
+	N[j].address = a;
+	N[j].data = d;
+}
 int main()
 {
-	freopen("in.txt", "r", stdin);
-	string head;
+	int head;
 	int n, k;
 	cin >> head >> n >> k;
-	Node1* N1 = new Node1[n];
-	vector<Node1> vc;
-	int h = 0;
+	Node N1[100000];
+	
+	//input
 	for (int i = 0; i < n; i++)
 	{
-		cin >> N1[i].address >> N1[i].data >> N1[i].next;
-		if (N1[i].address == head)
-			h = i;
+		int index;
+		cin >> index;
+		cin >> N1[index].data >> N1[index].address ;
 	}
-	vc.push_back(N1[h]);
-	string address = N1[h].next;
-	while (address!="-1")
+	//link
+	Node* N2 = new Node[n];
+	N2[0].address = head;
+	N2[0].data = N1[head].data;
+	for (int i = 1; i < n; i++)
 	{
-		for (int i = 0; i < n; i++)
-		{
-			if (N1[i].address == address)
-			{
-				vc.push_back(N1[i]);
-				address = N1[i].next;
-				break;
-			}
-		}
+		N2[i].address = N1[N2[i - 1].address].address;
+		N2[i].data = N1[N2[i].address].data;
 	}
-	if (n >= k)
+	
+	//reverse
+	//k=0?
+	if (k != 0&&k!=1)
 	{
 		int times = n / k;
 		for (int i = 0; i < times; i++)
 		{
-			reverse(&vc.at(i*k), &vc.at((i + 1)*k));
+			int mid = (2 * i + 1)*k / 2;
+			for (int j = k * i; j < mid; j++)
+			{
+				swapNode(N2, j, k - 1 - j);
+			}
 		}
 	}
+	
+	
 	
 	int i;
 	for ( i = 0; i < n-1; i++)
 	{
-		cout << vc[i].address << " " << vc[i].data << " " << vc[i+1].address<< endl;
+		cout << N2[i].address << " " << N2[i].data << " "<< N2[i+1].address<< endl;
 	}
-	cout << vc[i].address << " " << vc[i].data << " " << vc[i].next << endl;
+	cout << N2[i].address << " " << N2[i].data << "  -1" << endl;
+	delete[] N2;
 	return 0;
 }
 
