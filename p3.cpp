@@ -60,9 +60,9 @@ int main()
 	int i;
 	for ( i = 0; i < n-1; i++)
 	{
-		cout << N2[i].address << " " << N2[i].data << " "<< N2[i+1].address<< endl;
+		cout<<setw(5)<<setfill('0') << N2[i].address << " " << N2[i].data << " " << setw(5) << setfill('0') << N2[i+1].address<< endl;
 	}
-	cout << N2[i].address << " " << N2[i].data << "  -1" << endl;
+	cout << setw(5) << setfill('0') << N2[i].address << " " << N2[i].data << "  -1" << endl;
 	delete[] N2;
 	return 0;
 }
